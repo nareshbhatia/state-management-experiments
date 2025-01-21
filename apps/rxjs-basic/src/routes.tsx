@@ -3,7 +3,7 @@ import { HomePage } from './routes/home';
 import { MouseClickTracker } from './routes/mouse-click-tracker';
 import { MovieMagic } from './routes/movie-magic';
 import { RootLayout } from './routes/root';
-import type { RouteObject } from 'react-router-dom';
+import type { RouteObject } from 'react-router';
 
 export const routes: RouteObject[] = [
   {

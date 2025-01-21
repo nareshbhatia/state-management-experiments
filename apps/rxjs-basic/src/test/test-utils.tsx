@@ -3,7 +3,7 @@ import type { RenderOptions } from '@testing-library/react';
 import { render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import type * as React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router';
 
 /*
  * This file re-exports everything from React Testing Library and then overrides
