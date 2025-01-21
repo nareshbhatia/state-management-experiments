@@ -2,7 +2,7 @@
 
 Experiments to manage state in React.
 
-This repository was bootstrapped with [Code Shaper](https://code-shaper.dev).
+![Screenshot](assets/screenshot.png)
 
 ## Prerequisites for development
 

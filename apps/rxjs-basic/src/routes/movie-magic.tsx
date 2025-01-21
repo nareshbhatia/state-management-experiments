@@ -1,7 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
-import { Clock, Star, Users } from 'lucide-react';
+import { Clock, Star } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { switchMap, of, catchError } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 
 interface Image {
@@ -33,34 +32,35 @@ interface Movie {
   isFeatured: boolean;
 }
 
+function formatDuration(seconds: number) {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  return `${hours}:${minutes.toString().padStart(2, '0')}`;
+}
+
 export function MovieMagic() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | undefined>();
 
   useEffect(() => {
+    // Create an Observable that fetches top 10 movies
     const data$ = fromFetch(
-      'https://movie-magic-rest-api-221d9114e329.herokuapp.com/movies',
-    ).pipe(
-      switchMap(async (response) => {
-        if (response.ok) {
-          return response.json() as Promise<Movie[]>;
-        }
-        return of({ error: true, message: `Error ${response.status}` });
-      }),
-      catchError((err: Error) => {
-        console.error(err);
-        return of({ error: true, message: err.message });
-      }),
+      'https://movie-magic-rest-api-221d9114e329.herokuapp.com/movies?sort=RANK_ASC&page=1&perPage=10',
+      {
+        selector: async (response) => response.json(),
+      },
     );
 
+    // Subscribe to the observable
     const subscription = data$.subscribe({
-      next: (result) => {
-        if ('error' in result) {
-          setError(result.message);
-        } else {
-          setMovies(result as Movie[]);
-        }
+      next: (response) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        setMovies(response.movies as Movie[]);
+        setLoading(false);
+      },
+      error: (error: Error) => {
+        setError(error.message);
         setLoading(false);
       },
     });
@@ -69,12 +69,6 @@ export function MovieMagic() {
       subscription.unsubscribe();
     };
   }, []);
-
-  const formatRuntime = (minutes: number) => {
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-    return `${hours}h ${remainingMinutes}m`;
-  };
 
   if (loading) {
     return (
@@ -95,10 +89,7 @@ export function MovieMagic() {
   return (
     <div className="mx-auto max-w-6xl p-6">
       <div className="mb-6">
-        <h1 className="mb-2 text-3xl font-bold">Popular Movies</h1>
-        <div className="text-sm text-gray-500">
-          Showing {movies.length} movies, sorted by rating
-        </div>
+        <h1 className="mb-2 text-3xl font-bold">Top 10 Movies Of All Time</h1>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -124,16 +115,15 @@ export function MovieMagic() {
 
               <div className="mb-3 flex items-center gap-4 text-sm text-gray-600">
                 <div className="flex items-center gap-1">
+                  <span>Rank: #{movie.rank}</span>
+                </div>
+                <div className="flex items-center gap-1">
                   <Star className="size-4 text-yellow-500" />
                   <span>{movie.ratingsSummary.aggregateRating.toFixed(1)}</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Users className="size-4" />
-                  <span>{movie.ratingsSummary.voteCount.toLocaleString()}</span>
-                </div>
-                <div className="flex items-center gap-1">
                   <Clock className="size-4" />
-                  <span>{formatRuntime(movie.runtime)}</span>
+                  <span>{formatDuration(movie.runtime)}</span>
                 </div>
               </div>
 
