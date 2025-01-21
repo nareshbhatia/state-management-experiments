@@ -1,6 +1,6 @@
 # State Management Experiments
 
-** Add a short description of State Management Experiments here. **
+Experiments to manage state in React.
 
 This repository was bootstrapped with [Code Shaper](https://code-shaper.dev).
 

@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react';
 import { Observable } from 'rxjs';
 
-export function Basics() {
+export function BasicConcepts() {
   const [messages, setMessages] = useState<string[]>([]);
 
   useEffect(() => {
-    // Create an Observable that generates 2 values whenever an Observer subscribes to it
+    /*
+     * Create an Observable that generates 3 values whenever an Observer subscribes to it.
+     * The callback expects a subscriber and sends notifications to it using subscriber.next() method.
+     */
     const observable$ = new Observable<string>((subscriber) => {
       subscriber.next('Alice');
       subscriber.next('Ben');
+      subscriber.next('Charlie');
       subscriber.complete();
     });
 
@@ -26,11 +30,12 @@ export function Basics() {
     };
 
     /*
-     * Connect the observer to the observable through a subscription.
-     * This will start the observable emitting values.
+     * Call the observale's subscribe method to create a subscription, pass the observer as an argument.
+     * This starts executing the observable.
      */
     const subscription = observable$.subscribe(observer);
 
+    // Teardown function to clean up the subscription.
     return () => {
       setMessages([]);
       subscription.unsubscribe();

@@ -1,4 +1,4 @@
-import { Basics } from './routes/Basics';
+import { BasicConcepts } from './routes/basic-concepts';
 import { HomePage } from './routes/home';
 import { MouseClickTracker } from './routes/mouse-click-tracker';
 import { MovieMagic } from './routes/movie-magic';
@@ -14,8 +14,8 @@ export const routes: RouteObject[] = [
         element: <HomePage />,
       },
       {
-        path: '/basics',
-        element: <Basics />,
+        path: '/basic-concepts',
+        element: <BasicConcepts />,
       },
       {
         path: '/mouse-click-tracker',

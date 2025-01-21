@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useEffect, useState } from 'react';
-import { fromEvent, map, tap } from 'rxjs';
+import { fromEvent, map } from 'rxjs';
 
 interface ClickEvent {
   timestamp: number;
@@ -14,21 +14,22 @@ export function MouseClickTracker() {
   const [clicks, setClicks] = useState<ClickEvent[]>([]);
 
   useEffect(() => {
-    // Create an observable from mouse click events
-    const subscription = fromEvent<MouseEvent>(document, 'click')
-      .pipe(
-        map((event) => ({
-          timestamp: Date.now(),
-          x: event.clientX,
-          y: event.clientY,
-          button: event.button,
-          type: event.type,
-        })),
-        tap((clickEvent) => {
-          setClicks((prevClicks) => [clickEvent, ...prevClicks].slice(0, 5));
-        }),
-      )
-      .subscribe();
+    // Create an Observable that tracks mouse clicks
+    const mouseTracker$ = fromEvent<MouseEvent>(document, 'click').pipe(
+      map((event) => ({
+        timestamp: Date.now(),
+        x: event.clientX,
+        y: event.clientY,
+        button: event.button,
+        type: event.type,
+      })),
+    );
+
+    // Subscribe to the observable
+    const subscription = mouseTracker$.subscribe((clickEvent) => {
+      // retain 5 most recent clicks
+      setClicks((prevClicks) => [clickEvent, ...prevClicks].slice(0, 5));
+    });
 
     // Cleanup subscription on unmount
     return () => {

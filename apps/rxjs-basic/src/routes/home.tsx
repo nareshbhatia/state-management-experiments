@@ -5,8 +5,8 @@ export function HomePage() {
     <div className="container relative mx-auto max-w-screen-xl px-8 py-4">
       <ul className="divide-y">
         <li className="flex flex-col py-5">
-          <Link className="text-blue-600" to="/basics">
-            Basics
+          <Link className="text-blue-600" to="/basic-concepts">
+            Basic Concepts
           </Link>
         </li>
         <li className="flex flex-col py-5">
