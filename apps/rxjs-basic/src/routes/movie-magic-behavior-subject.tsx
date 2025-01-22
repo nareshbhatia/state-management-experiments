@@ -1,15 +1,11 @@
 import { MovieList } from '@/components/MovieList';
 import type { Movie } from '@/models/Movie';
-import { useEffect, useMemo, useState } from 'react';
+import { useObservableState } from 'observable-hooks';
+import { useEffect, useMemo } from 'react';
 import { BehaviorSubject } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 
 export function MovieMagicBehaviorSubject() {
-  // React state is stored here
-  const [movies, setMovies] = useState<Movie[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | undefined>();
-
   // RxJS state is stored here
   const movies$ = useMemo(() => new BehaviorSubject<Movie[]>([]), []);
   const loading$ = useMemo(() => new BehaviorSubject<boolean>(true), []);
@@ -17,6 +13,11 @@ export function MovieMagicBehaviorSubject() {
     () => new BehaviorSubject<string | undefined>(undefined),
     [],
   );
+
+  // Connect RxJS state to React state using useObservableState
+  const movies = useObservableState<Movie[]>(movies$, []);
+  const loading = useObservableState<boolean>(loading$, true);
+  const error = useObservableState<string | undefined>(error$, undefined);
 
   useEffect(() => {
     // Create an Observable that fetches top 10 movies
@@ -40,22 +41,8 @@ export function MovieMagicBehaviorSubject() {
       },
     });
 
-    // Whenever RxJS state changes, update React state
-    const moviesSubscription = movies$.subscribe((movies) => {
-      setMovies(movies);
-    });
-    const loadingSubscription = loading$.subscribe((loading) => {
-      setLoading(loading);
-    });
-    const errorSubscription = error$.subscribe((error) => {
-      setError(error);
-    });
-
     return () => {
       data$Subscription.unsubscribe();
-      moviesSubscription.unsubscribe();
-      loadingSubscription.unsubscribe();
-      errorSubscription.unsubscribe();
     };
   }, [error$, loading$, movies$]);
 
