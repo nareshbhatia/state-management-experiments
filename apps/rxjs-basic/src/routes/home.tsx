@@ -20,8 +20,8 @@ export function HomePage() {
           </Link>
         </li>
         <li className="flex flex-col py-5">
-          <Link className="text-blue-600" to="/movie-magic-behavior-subject">
-            Movie Magic (http fetch + BehaviorSubject)
+          <Link className="text-blue-600" to="/movie-magic-observable-hooks">
+            Movie Magic (http fetch + Observable Hooks)
           </Link>
         </li>
       </ul>

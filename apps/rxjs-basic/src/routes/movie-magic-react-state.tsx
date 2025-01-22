@@ -1,16 +1,18 @@
 import { MovieList } from '@/components/MovieList';
-import type { Movie } from '@/models/Movie';
+import type { MoviePagination } from '@/models';
+import { emptyMoviePagination } from '@/models';
 import { useEffect, useState } from 'react';
 import { fromFetch } from 'rxjs/fetch';
 
 export function MovieMagicReactState() {
-  const [movies, setMovies] = useState<Movie[]>([]);
+  const [moviePagination, setMoviePagination] =
+    useState<MoviePagination>(emptyMoviePagination);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | undefined>();
 
   useEffect(() => {
     // Create an Observable that fetches top 10 movies
-    const data$ = fromFetch(
+    const data$ = fromFetch<MoviePagination>(
       'https://movie-magic-rest-api-221d9114e329.herokuapp.com/movies?sort=RANK_ASC&page=1&perPage=10',
       {
         selector: async (response) => response.json(),
@@ -20,8 +22,7 @@ export function MovieMagicReactState() {
     // Subscribe to the observable
     const subscription = data$.subscribe({
       next: (response) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        setMovies(response.movies as Movie[]);
+        setMoviePagination(response);
         setLoading(false);
       },
       error: (error: Error) => {
@@ -58,7 +59,7 @@ export function MovieMagicReactState() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <MovieList movies={movies} />
+        <MovieList movies={moviePagination.movies} />
       </div>
     </div>
   );
