@@ -1,12 +1,22 @@
 import { MovieList } from '@/components/MovieList';
 import type { Movie } from '@/models/Movie';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { BehaviorSubject } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 
-export function MovieMagic() {
+export function MovieMagicBehaviorSubject() {
+  // React state is stored here
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | undefined>();
+
+  // RxJS state is stored here
+  const movies$ = useMemo(() => new BehaviorSubject<Movie[]>([]), []);
+  const loading$ = useMemo(() => new BehaviorSubject<boolean>(true), []);
+  const error$ = useMemo(
+    () => new BehaviorSubject<string | undefined>(undefined),
+    [],
+  );
 
   useEffect(() => {
     // Create an Observable that fetches top 10 movies
@@ -17,23 +27,37 @@ export function MovieMagic() {
       },
     );
 
-    // Subscribe to the observable
-    const subscription = data$.subscribe({
+    // Subscribe to the data$ observable
+    const data$Subscription = data$.subscribe({
       next: (response) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        setMovies(response.movies as Movie[]);
-        setLoading(false);
+        movies$.next(response.movies as Movie[]);
+        loading$.next(false);
       },
       error: (error: Error) => {
-        setError(error.message);
-        setLoading(false);
+        error$.next(error.message);
+        loading$.next(false);
       },
     });
 
+    // Whenever RxJS state changes, update React state
+    const moviesSubscription = movies$.subscribe((movies) => {
+      setMovies(movies);
+    });
+    const loadingSubscription = loading$.subscribe((loading) => {
+      setLoading(loading);
+    });
+    const errorSubscription = error$.subscribe((error) => {
+      setError(error);
+    });
+
     return () => {
-      subscription.unsubscribe();
+      data$Subscription.unsubscribe();
+      moviesSubscription.unsubscribe();
+      loadingSubscription.unsubscribe();
+      errorSubscription.unsubscribe();
     };
-  }, []);
+  }, [error$, loading$, movies$]);
 
   if (loading) {
     return (

@@ -15,8 +15,13 @@ export function HomePage() {
           </Link>
         </li>
         <li className="flex flex-col py-5">
-          <Link className="text-blue-600" to="/movie-magic">
-            Movie Magic (http fetch example)
+          <Link className="text-blue-600" to="/movie-magic-react-state">
+            Movie Magic (http fetch + React state)
+          </Link>
+        </li>
+        <li className="flex flex-col py-5">
+          <Link className="text-blue-600" to="/movie-magic-behavior-subject">
+            Movie Magic (http fetch + BehaviorSubject)
           </Link>
         </li>
       </ul>
