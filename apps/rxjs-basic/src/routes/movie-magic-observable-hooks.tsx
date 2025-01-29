@@ -1,5 +1,5 @@
 import { MovieList } from '@/components/MovieList';
-import { useQuery } from '@/hooks/useQuery';
+import { useQuery } from '@/components/movie-magic-observable-hooks/useQuery';
 import type { MoviePagination } from '@/models';
 
 export function MovieMagicObservableHooks() {
