@@ -7,6 +7,7 @@ import './globals.css';
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const root = createRoot(document.getElementById('root')!);
 const router = createBrowserRouter(routes);
+
 root.render(
   <React.StrictMode>
     <RouterProvider router={router} />

@@ -1,6 +1,7 @@
 import { MovieList } from '@/components/MovieList';
 import type { MoviePagination } from '@/models';
 import { emptyMoviePagination } from '@/models';
+import { MOVIE_REQUEST_URL } from '@/utils/constants';
 import { useEffect, useState } from 'react';
 import { fromFetch } from 'rxjs/fetch';
 
@@ -12,12 +13,9 @@ export function MovieMagicReactState() {
 
   useEffect(() => {
     // Create an Observable that fetches top 10 movies
-    const data$ = fromFetch<MoviePagination>(
-      'https://movie-magic-rest-api-221d9114e329.herokuapp.com/movies?sort=RANK_ASC&page=1&perPage=10',
-      {
-        selector: async (response) => response.json(),
-      },
-    );
+    const data$ = fromFetch<MoviePagination>(MOVIE_REQUEST_URL, {
+      selector: async (response) => response.json(),
+    });
 
     // Subscribe to the observable
     const subscription = data$.subscribe({

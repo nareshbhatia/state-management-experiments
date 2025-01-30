@@ -1,11 +1,11 @@
 import { MovieList } from '@/components/MovieList';
 import { useQuery } from '@/components/movie-magic-observable-hooks/useQuery';
 import type { MoviePagination } from '@/models';
+import { MOVIE_REQUEST_URL } from '@/utils/constants';
 
 export function MovieMagicObservableHooks() {
-  const { data, isLoading, error } = useQuery<MoviePagination>(
-    'https://movie-magic-rest-api-221d9114e329.herokuapp.com/movies?sort=RANK_ASC&page=1&perPage=10',
-  );
+  const { data, isLoading, error } =
+    useQuery<MoviePagination>(MOVIE_REQUEST_URL);
 
   if (isLoading) {
     return (
