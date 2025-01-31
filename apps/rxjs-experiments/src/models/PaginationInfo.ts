@@ -1,4 +1,5 @@
 import type { Movie } from './Movie';
+import { movies } from '../mocks/movies';
 
 /**
  * Pagination information returned as the result of a list query
@@ -38,6 +39,18 @@ export const emptyMoviePagination: MoviePagination = {
     totalItems: 0,
     page: 0,
     perPage: 0,
+    hasNextPage: false,
+    hasPreviousPage: false,
+  },
+};
+
+export const mockMoviePagination: MoviePagination = {
+  movies,
+  pageInfo: {
+    totalPages: 1,
+    totalItems: 13,
+    page: 1,
+    perPage: 20,
     hasNextPage: false,
     hasPreviousPage: false,
   },
