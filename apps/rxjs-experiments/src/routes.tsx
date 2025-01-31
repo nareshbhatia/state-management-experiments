@@ -2,6 +2,7 @@ import { RootLayout } from './app/root';
 import { BasicConcepts } from './app/routes/basic-concepts/route';
 import { HomePage } from './app/routes/home/route';
 import { MouseClickTracker } from './app/routes/mouse-click-tracker/route';
+import { MovieMagicMvcPattern } from './app/routes/movie-magic-mvc-pattern/route';
 import { MovieMagicObservableHooks } from './app/routes/movie-magic-observable-hooks/route';
 import { MovieMagicReactState } from './app/routes/movie-magic-react-state/route';
 import { RoutePath } from './utils/RoutePath';
@@ -30,6 +31,10 @@ export const routes: RouteObject[] = [
       {
         path: RoutePath.MovieMagicObservableHooks,
         element: <MovieMagicObservableHooks />,
+      },
+      {
+        path: RoutePath.MovieMagicMvcPattern,
+        element: <MovieMagicMvcPattern />,
       },
     ],
   },

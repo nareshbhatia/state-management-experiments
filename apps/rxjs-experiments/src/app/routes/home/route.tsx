@@ -28,6 +28,11 @@ export function HomePage() {
             Movie Magic (http fetch + Observable Hooks)
           </Link>
         </li>
+        <li className="flex flex-col py-5">
+          <Link className="text-blue-600" to={RoutePath.MovieMagicMvcPattern}>
+            Movie Magic (http fetch + MVC Pattern)
+          </Link>
+        </li>
       </ul>
     </div>
   );
