@@ -1,5 +1,5 @@
+import { useQuery } from './packages/useQuery/useQuery';
 import { MovieList } from '@/components/MovieList';
-import { useQuery } from '@/components/movie-magic-observable-hooks/useQuery';
 import type { MoviePagination } from '@/models';
 import { MOVIE_REQUEST_URL } from '@/utils/constants';
 
