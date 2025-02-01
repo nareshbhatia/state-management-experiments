@@ -1,4 +1,4 @@
-import { MoviesController } from './movies-controller/MoviesController';
+import { MoviesController } from './controller';
 import { useObservable } from './packages/useObservable';
 import { MovieList } from '../../../components/MovieList';
 import { MOVIE_REQUEST_URL } from '@/utils/constants';
