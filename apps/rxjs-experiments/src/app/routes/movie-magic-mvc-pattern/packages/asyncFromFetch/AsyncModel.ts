@@ -8,7 +8,7 @@ export interface AsyncModelLoading {
 
 export interface AsyncModelError {
   status: 'error';
-  error: unknown;
+  error: Error;
 }
 
 export interface AsyncModelLoaded<T> {

@@ -27,7 +27,7 @@ export function MovieMagicMvcPattern() {
     case 'error':
       return (
         <div className="flex min-h-screen items-center justify-center">
-          <div className="text-red-500">{moviesModel.error as string}</div>
+          <div className="text-red-500">{moviesModel.error.message}</div>
         </div>
       );
 

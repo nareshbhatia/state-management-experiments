@@ -1,6 +1,6 @@
 import type { IMoviesController } from './IMoviesController';
 import type { MoviePagination } from '../../../../models';
-import type { AsyncModel } from '../packages/async-model';
+import type { AsyncModel } from '../packages/asyncFromFetch';
 import { MovieService } from '../services/MoviesService';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
